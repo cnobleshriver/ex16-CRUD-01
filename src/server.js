@@ -122,11 +122,15 @@ async function updateCounter(response, name) {
   // TASK #5: Implement this function.
   try {
     const counter = await db.loadCounter(name);
-
-
-
+    counter.count += 1;
+    await db.modifyCounter(counter);
+    response.writeHead(200, headerFields);
+    response.wite(`<h1>Counter ${counter._id} Updated</h1>`);
+    response.end();
   } catch (error) {
-
+    response.writeHead(404, headerFields);
+    response.write(`<h1>Counter ${name} Not Found</h1>`);
+    response.end();
   }
 }
 
