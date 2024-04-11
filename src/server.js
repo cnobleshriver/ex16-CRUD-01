@@ -215,7 +215,13 @@ async function basicServer(request, response) {
   // TASK #2: Implement the basic server functionality.
   // Complete the following logic for `createCounter`, `readCounter`, and
   // `updateCounter`.
-  if (request.url.startsWith("/delete")) {
+  if (request.url.startsWith("/create")) {
+    await createCounter(response, options.name);
+  } else if (request.url.startsWith("/read")) {
+    await readCounter(response, options.name);
+  } else if (request.url.startsWith("update")) {
+    await updateCounter(response, options.name);
+  } else if (request.url.startsWith("/delete")) {
     await deleteCounter(response, options.name);
   } else {
     await dumpCounters(response);
