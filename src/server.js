@@ -60,21 +60,14 @@ const headerFields = { "Content-Type": "text/html" };
  */
 async function createCounter(response, name) {
   // TASK #3: Implement this function.
-  if (!name) {
-    response.writeHead(400, headerFields);
-    response.write(`<h1>Counter Name Required</h1>`);
-    response.end();
-    return;
-  }
-
   try {
     await db.saveCounter(name, 0);
     response.writeHead(200, headerFields);
     response.write(`<h1>Counter ${name} Created</h1>`);
     response.end();
   } catch (error) {
-    response.writeHead(500, headerFields);
-    response.write(`<h1>Internal Server Error</h1>`);
+    response.writeHead(400, headerFields);
+    response.write(`<h1>Counter Name Required</h1>`);
     response.end();
   }
 }
@@ -96,8 +89,16 @@ async function createCounter(response, name) {
  */
 async function readCounter(response, name) {
   // TASK #4: Implement this function.
-  response.write("Not Implemented");
-  response.end();
+  try {
+    const counter = await db.loadCounter(name);
+    response.writeHead(200, headerFields);
+    response.wite(`<h1>Counter ${counter._id} = ${counter.count}</h1>`);
+    response.end();
+  } catch (error){
+    response.writeHead(404, headerFields);
+    response.write(`<h1>Counter ${name} Not Found</h1>`);
+    response.end();
+  }
 }
 
 /**
@@ -119,8 +120,14 @@ async function readCounter(response, name) {
  */
 async function updateCounter(response, name) {
   // TASK #5: Implement this function.
-  response.write("Not Implemented");
-  response.end();
+  try {
+    const counter = await db.loadCounter(name);
+
+
+
+  } catch (error) {
+
+  }
 }
 
 /**
