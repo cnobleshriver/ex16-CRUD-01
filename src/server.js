@@ -60,8 +60,23 @@ const headerFields = { "Content-Type": "text/html" };
  */
 async function createCounter(response, name) {
   // TASK #3: Implement this function.
-  response.write("Not Implemented");
-  response.end();
+  if (!name) {
+    response.writeHead(400, headerFields);
+    response.write(`<h1>Counter Name Required</h1>`);
+    response.end();
+    return;
+  }
+
+  try {
+    await db.saveCounter(name, 0);
+    response.writeHead(200, headerFields);
+    response.write(`<h1>Counter ${name} Created</h1>`);
+    response.end();
+  } catch (error) {
+    response.writeHead(500, headerFields);
+    response.write(`<h1>Internal Server Error</h1>`);
+    response.end();
+  }
 }
 
 /**
